@@ -3,26 +3,36 @@ import 'package:adaptive_view/src/breakpoints.dart';
 import 'package:adaptive_view/src/slot_layout.dart';
 import 'package:flutter/material.dart';
 
+/// An adaptive view that provide base dashboard view.
+///
+/// Internally this widget use [AdaptiveLayout] to provide adaptivity.
 class AdaptiveDashboardView extends StatelessWidget {
+  /// Creates a const [AdaptiveDashboardView] widget.
   const AdaptiveDashboardView({
-    required this.body,
-    required this.currentIndex,
-    required this.destinations,
+    required this.bodyBuilder,
     this.sidebarBuilder,
+    this.bottomNavigationBarBuilder,
+    this.animationDuration = defaultAnimationDuration,
+    this.smallBreakpoint = defaultSmallBreakpoint,
+    this.mediumBreakpoint = defaultMediumBreakpoint,
+    this.largeBreakpoint = defaultLargeBreakpoint,
     super.key,
   });
 
-  final Widget body;
-  final int currentIndex;
-  final List<RoutedNavigationDestination> destinations;
+  final Widget Function(BuildContext) bodyBuilder;
   final Widget Function(BuildContext)? sidebarBuilder;
+  final Widget Function(BuildContext)? bottomNavigationBarBuilder;
+  final Duration animationDuration;
+  final Breakpoint smallBreakpoint;
+  final Breakpoint mediumBreakpoint;
+  final Breakpoint largeBreakpoint;
 
-  static const smallBreakpoint = WidthPlatformBreakpoint(end: 700);
-  static const mediumBreakpoint =
+  static const defaultSmallBreakpoint = WidthPlatformBreakpoint(end: 700);
+  static const defaultMediumBreakpoint =
       WidthPlatformBreakpoint(begin: 700, end: 1200);
-  static const largeBreakpoint = WidthPlatformBreakpoint(begin: 1200);
+  static const defaultLargeBreakpoint = WidthPlatformBreakpoint(begin: 1200);
 
-  static const animationDuration = Duration(milliseconds: 400);
+  static const defaultAnimationDuration = Duration(milliseconds: 500);
 
   /// Animation from bottom offscreen up onto the screen.
   static AnimatedWidget bottomToTop(Widget child, Animation<double> animation) {
@@ -106,104 +116,50 @@ class AdaptiveDashboardView extends StatelessWidget {
     );
   }
 
-  BottomNavigationBar _buildBottomNavigationBar(BuildContext context) {
-    return BottomNavigationBar(
-      currentIndex: currentIndex,
-      items: destinations.map(
-        (e) {
-          return BottomNavigationBarItem(
-            label: e.widget.label,
-            icon: e.widget.icon,
-          );
-        },
-      ).toList(),
-      onTap: (index) {
-        destinations[index].navigate(context, index);
-      },
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
-    return BottomNavigationBarTheme(
-      data: const BottomNavigationBarThemeData(
-        unselectedItemColor: Colors.black,
-        selectedItemColor: Colors.black,
-        backgroundColor: Colors.white,
-      ),
-      child: Directionality(
-        textDirection: TextDirection.ltr,
-        child: Scaffold(
-          body: AdaptiveLayout(
-            bodyRatio: 1,
-            animationDuration: animationDuration,
-            primaryNavigation: SlotLayout(
-              animationDuration: animationDuration,
-              config: {
-                Breakpoints.standard: SlotLayout.from(
-                  key: const Key('primaryNavigation'),
-                  builder: (_) {
-                    if (smallBreakpoint.isActive(context)) {
-                      return const SizedBox();
-                    }
-                    return AnimatedContainer(
-                      duration: animationDuration,
-                      width: largeBreakpoint.isActive(context) ? 192 : 72,
-                      decoration: const BoxDecoration(
-                        color: Colors.blueGrey,
-                      ),
-                    );
-                  },
-                ),
-                // largeBreakpoint: SlotLayout.from(
-                //   key: const Key('primaryNavigation1'),
-                //   builder: (_) {
-                //     return Container(
-                //       width: 192,
-                //       decoration: const BoxDecoration(
-                //         color: Colors.blueGrey,
-                //       ),
-                //     );
-                //   },
-                // ),
-              },
-            ),
-            bottomNavigation: SlotLayout(
-              animationDuration: animationDuration,
-              config: <Breakpoint, SlotLayoutConfig>{
-                smallBreakpoint: SlotLayout.from(
-                  key: const Key('bottomNavigation'),
-                  builder: _buildBottomNavigationBar,
-                ),
-              },
-            ),
-            body: SlotLayout(
-              animationDuration: animationDuration,
-              config: <Breakpoint, SlotLayoutConfig?>{
-                Breakpoints.standard: SlotLayout.from(
-                  key: const Key('body'),
-                  inAnimation: fadeIn,
-                  outAnimation: fadeOut,
-                  builder: (_) => body,
-                ),
-                mediumBreakpoint: SlotLayout.from(
-                  key: const Key('body'),
-                  inAnimation: fadeIn,
-                  outAnimation: fadeOut,
-                  builder: (_) => body,
-                ),
-              },
-            ),
+    return Directionality(
+      textDirection: TextDirection.ltr,
+      child: Scaffold(
+        body: AdaptiveLayout(
+          bodyRatio: 1,
+          primaryNavigation: SlotLayout(
+            animationDuration: defaultAnimationDuration,
+            config: {
+              Breakpoints.standard: SlotLayout.from(
+                key: const Key('primaryNavigation'),
+                builder: sidebarBuilder,
+              ),
+            },
+          ),
+          bottomNavigation: SlotLayout(
+            animationDuration: defaultAnimationDuration,
+            config: <Breakpoint, SlotLayoutConfig>{
+              smallBreakpoint: SlotLayout.from(
+                key: const Key('bottomNavigation'),
+                builder: bottomNavigationBarBuilder,
+              ),
+            },
+          ),
+          body: SlotLayout(
+            animationDuration: defaultAnimationDuration,
+            config: <Breakpoint, SlotLayoutConfig?>{
+              Breakpoints.standard: SlotLayout.from(
+                key: const Key('body'),
+                inAnimation: fadeIn,
+                outAnimation: fadeOut,
+                builder: bodyBuilder,
+              ),
+              mediumBreakpoint: SlotLayout.from(
+                key: const Key('body'),
+                inAnimation: fadeIn,
+                outAnimation: fadeOut,
+                builder: bodyBuilder,
+              ),
+            },
           ),
         ),
       ),
     );
   }
-}
-
-class RoutedNavigationDestination {
-  RoutedNavigationDestination({required this.widget, required this.navigate});
-
-  final NavigationDestination widget;
-  final void Function(BuildContext context, int index) navigate;
 }

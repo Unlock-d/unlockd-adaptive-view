@@ -19,8 +19,6 @@ class SlotLayout extends StatefulWidget {
     super.key,
   });
 
-  final Duration animationDuration;
-
   /// Given a context and a config, it returns the [SlotLayoutConfig] that will g
   /// be chosen from the config under the context's conditions.
   static SlotLayoutConfig? pickWidget(
@@ -35,6 +33,9 @@ class SlotLayout extends StatefulWidget {
     });
     return chosenWidget;
   }
+
+  /// The transition animation duration.
+  final Duration animationDuration;
 
   /// Maps [Breakpoint]s to [SlotLayoutConfig]s to determine what Widget to
   /// display on which condition of screens.
