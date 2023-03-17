@@ -1,12 +1,12 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'package:adaptive_view/adaptive_view.dart';
+import 'package:adaptive_view/src/adaptive_layout.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-  group('AdaptiveView', () {
+  group('AdaptiveLayout', () {
     test('can be instantiated', () {
-      expect(AdaptiveView(), isNotNull);
+      expect(AdaptiveLayout(), isNotNull);
     });
   });
 }
