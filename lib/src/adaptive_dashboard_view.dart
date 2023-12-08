@@ -1,6 +1,6 @@
-import 'package:adaptive_view/src/adaptive_layout.dart';
-import 'package:adaptive_view/src/breakpoints.dart';
-import 'package:adaptive_view/src/slot_layout.dart';
+import 'package:unlockd_adaptive_view/src/adaptive_layout.dart';
+import 'package:unlockd_adaptive_view/src/breakpoints.dart';
+import 'package:unlockd_adaptive_view/src/slot_layout.dart';
 import 'package:flutter/material.dart';
 
 /// An adaptive view that provide base dashboard view.

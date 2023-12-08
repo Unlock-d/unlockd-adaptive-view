@@ -4,8 +4,8 @@
 
 import 'dart:ui';
 
-import 'package:adaptive_view/src/breakpoints.dart';
-import 'package:adaptive_view/src/slot_layout.dart';
+import 'package:unlockd_adaptive_view/src/breakpoints.dart';
+import 'package:unlockd_adaptive_view/src/slot_layout.dart';
 import 'package:flutter/widgets.dart';
 
 enum _SlotIds {

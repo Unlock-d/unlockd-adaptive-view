@@ -1,4 +1,4 @@
-name: adaptive_view
+name: unlockd_adaptive_view
 description: A fork of flutter_adaptive_scaffold that provide a way to set transition animation duration
 version: 0.1.0+1
 publish_to: none

@@ -10,11 +10,11 @@ A fork of flutter_adaptive_scaffold that provide a way to set transition animati
 
 **❗ In order to start using Adaptive View you must have the [Flutter SDK][flutter_install_link] installed on your machine.**
 
-Add `adaptive_view` to your `pubspec.yaml`:
+Add `unlockd_adaptive_view` to your `pubspec.yaml`:
 
 ```yaml
 dependencies:
-  adaptive_view:
+  unlockd_adaptive_view:
 ```
 
 Install it:

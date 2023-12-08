@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
-import 'package:adaptive_view/src/breakpoints.dart';
+import 'package:unlockd_adaptive_view/src/breakpoints.dart';
 import 'package:flutter/widgets.dart';
 
 /// A Widget that takes a mapping of [SlotLayoutConfig]s to [Breakpoint]s and
